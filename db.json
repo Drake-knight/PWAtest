@@ -1,0 +1,44 @@
+{
+  "heroes": [
+    {
+      "name": "Batman",
+      "id": 1
+    },
+    {
+      "name": "Thor",
+      "id": 2
+    },
+    {
+      "name": "Hulk",
+      "id": 3
+    },
+    {
+      "name": "Captain America",
+      "id": 4
+    },
+    {
+      "name": "Spiderman",
+      "id": 5
+    },
+    {
+      "name": "Beast Boy",
+      "id": 6
+    },
+    {
+      "name": "Green Lantern",
+      "id": 7
+    },
+    {
+      "name": "Superman",
+      "id": 8
+    },
+    {
+      "name": "Captain Marvel",
+      "id": 9
+    },
+    {
+      "name": "Iron Fist",
+      "id": 10
+    }
+  ]
+}
