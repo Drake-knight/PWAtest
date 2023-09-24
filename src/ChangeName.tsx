@@ -15,7 +15,7 @@ const ChangeName: React.FC = (): JSX.Element => {
 
 	useEffect(() => {
 		axios
-			.get<Hero>(`http://localhost:5000/heroes/${id}`)
+			.get<Hero>(`https://tour-of-heroes-xuwa.onrender.com/heroes/${id}`)
 			.then((response) => {
 				setHero(response.data);
 				setIsPending(false);
@@ -34,7 +34,7 @@ const ChangeName: React.FC = (): JSX.Element => {
 			console.log("New Name:", newName);
 
 			const response = await axios.put(
-				`http://localhost:5000/change/${id}`,
+				`https://tour-of-heroes-xuwa.onrender.com/change/${id}`,
 				{ newName }, // JSON data
 				{
 					headers: {

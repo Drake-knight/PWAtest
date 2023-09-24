@@ -10,7 +10,7 @@ const Dashboard: React.FC = (): JSX.Element => {
 
 	useEffect(() => {
 		axios
-			.get<Hero[]>("http://localhost:5000/heroes")
+			.get<Hero[]>("https://tour-of-heroes-xuwa.onrender.com/heroes")
 			.then((response) => {
 				setHeroes(response.data);
 				setIsPending(false);
