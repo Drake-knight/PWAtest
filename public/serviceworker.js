@@ -14,7 +14,7 @@ self.addEventListener('install', (event) => {
 });
 
 
-//listen forrequest  // doesnt cache anything // to display offline page when offline
+//listen forrequest  // doesnt cache anything other than offline.html // to display offline page when offline
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
@@ -54,6 +54,7 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
+                // eslint-disable-next-line array-callback-return
                 cacheNames.map((cacheName) => {
                     if (!cacheWhiteList.includes(cacheName)) {
                         return caches.delete(cacheName);

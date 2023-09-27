@@ -1,4 +1,21 @@
 {
+	"shortcuts": [
+		{
+			"name": "All Heroes",
+			"short_name": "Heroes",
+			"description": "Display all heroes",
+			"url": "/heroes",
+			"icons": [
+				{
+					"src": "https://pwabuilder.com/assets/icons/icon_192.png",
+					"sizes": "192x192"
+				}
+			]
+		}
+	],
+	"display_override": ["window-controls-overlay"],
+	"description": "App to display heroes",
+	"orientation": "any",
 	"name": "Tour Of Heroes PWA",
 	"short_name": "Tour Of Heroes",
 	"start_url": ".",

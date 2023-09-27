@@ -141,7 +141,7 @@
   font-size: 20px;
 }
 
-.change-name button {
+#change-name-button{
   background: #f1356d;
   color: #fff;
   border: 0;
@@ -150,4 +150,44 @@
   cursor: pointer;
   font-size: 20px;
   margin-top: 10px;
+}
+
+#shareButton{
+  background: #1ace92;
+  color: #fff;
+  border: 0;
+  padding: 7px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+  width: 40%;
+  margin-left: 120px;
+}
+
+@media screen and (max-width:650px) {
+  #shareButton{
+    background: #1ace92;
+    color: #fff;
+    border: 0;
+    padding: 2.7px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 10px;
+    width: 100%;
+    margin-left: 0px;
+  }
+  #change-name-button{
+    background: #f1356d;
+    color: #fff;
+    border: 0;
+    padding: 2.7px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+    margin-top: 10px;
+    width: 100%;
+    margin-left: 0px;
+  }
 }

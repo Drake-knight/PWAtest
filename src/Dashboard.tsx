@@ -9,17 +9,20 @@ const Dashboard: React.FC = (): JSX.Element => {
 	const [isPending, setIsPending] = useState<boolean>(true);
 
 	useEffect(() => {
-		axios
-			.get<Hero[]>("https://tour-of-heroes-xuwa.onrender.com/heroes")
-			.then((response) => {
+		const fetchData = async () => {
+			try {
+				const response = await axios.get<Hero[]>("https://tour-of-heroes-xuwa.onrender.com/heroes");
 				setHeroes(response.data);
+				setError(null);
 				setIsPending(false);
-			})
-			.catch((err) => {
-				console.log(err);
+			} catch (err) {
+				console.error(err);
 				setError("Error fetching data");
-				setIsPending(false);
-			});
+			}
+		};
+		const intervalId = setInterval(fetchData, 5000);
+		fetchData();
+		return () => clearInterval(intervalId);
 	}, []);
 
 	return (

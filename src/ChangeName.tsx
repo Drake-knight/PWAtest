@@ -35,7 +35,7 @@ const ChangeName: React.FC = (): JSX.Element => {
 
 			const response = await axios.put(
 				`https://tour-of-heroes-xuwa.onrender.com/change/${id}`,
-				{ newName }, // JSON data
+				{ newName },
 				{
 					headers: {
 						"Content-Type": "application/json",
@@ -55,6 +55,18 @@ const ChangeName: React.FC = (): JSX.Element => {
 		}
 	};
 
+	const handleShare = () => {
+		if (navigator.share) {
+			navigator.share({
+				title: `Hero name`,
+				text: `Hey it's ${hero?.name}`,
+				url: `${hero?.id}`,
+			});
+		} else {
+			console.log("web-api not supported");
+		}
+	};
+
 	if (isPending) {
 		return <div>Loading...</div>;
 	}
@@ -66,9 +78,13 @@ const ChangeName: React.FC = (): JSX.Element => {
 				<label>New Name:</label>
 				{error && <div>{error}</div>}
 				<input type="text" required value={newName} onChange={(e) => setNewName(e.target.value)} />
-				{!isPending && <button>Change Name</button>}
+				{!isPending && <button id="change-name-button">Change Name</button>}
 				{isPending && <button disabled>Changing</button>}
 			</form>
+			<button id="shareButton" className="modal-button" onClick={handleShare}>
+				Share Hero
+			</button>
+
 			{putError && <div>{putError}</div>}
 		</div>
 	);

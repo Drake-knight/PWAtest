@@ -8,16 +8,21 @@ const Home: React.FC = (): JSX.Element => {
 	const [heroes, setHeroes] = useState<Hero[] | null>(null);
 
 	useEffect(() => {
-		axios
-			.get<Hero[]>("https://tour-of-heroes-xuwa.onrender.com/heroes")
-			.then((response) => {
+		const fetchData = async () => {
+			try {
+				const response = await axios.get<Hero[]>("https://tour-of-heroes-xuwa.onrender.com/heroes");
+				console.log("API Data:", response.data);
 				setHeroes(response.data);
+				setError(null);
 				setIsPending(false);
-			})
-			.catch((err) => {
+			} catch (err) {
+				console.error(err);
 				setError("Error fetching data");
-				setIsPending(false);
-			});
+			}
+		};
+		const intervalId = setInterval(fetchData, 5000);
+		fetchData();
+		return () => clearInterval(intervalId);
 	}, []);
 
 	return (
