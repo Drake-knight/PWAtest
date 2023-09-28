@@ -19,6 +19,7 @@
     "react-scripts": "5.0.1",
     "react-web-share-api": "^0.0.2",
     "typescript": "^4.9.5",
+    "web-push": "^3.6.6",
     "web-vitals": "^2.1.4",
     "workbox-sw": "^7.0.0"
   },

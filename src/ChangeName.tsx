@@ -26,13 +26,26 @@ const ChangeName: React.FC = (): JSX.Element => {
 			});
 	}, [id]);
 
+	const sendNameChangeNotification = async (newHeroName: any) => {
+		if ("PushManager" in window && "serviceWorker" in navigator) {
+			const registration = await navigator.serviceWorker.getRegistration();
+
+			if (registration && registration.active) {
+				const message = {
+					type: "nameChangeNotification",
+					data: newHeroName,
+				};
+				registration.active.postMessage(message);
+			}
+		}
+	};
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			console.log("Submitting PUT request:");
 			console.log("ID:", id);
 			console.log("New Name:", newName);
-
+			sendNameChangeNotification(newName);
 			const response = await axios.put(
 				`https://tour-of-heroes-xuwa.onrender.com/change/${id}`,
 				{ newName },
@@ -44,11 +57,6 @@ const ChangeName: React.FC = (): JSX.Element => {
 			);
 
 			console.log("PUT Response:", response);
-
-			if (response.status !== 200) {
-				throw new Error("Failed to update name");
-			}
-
 			history(-1);
 		} catch (err: any) {
 			setPutError(err.message);
