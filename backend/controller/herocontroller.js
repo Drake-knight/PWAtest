@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const express = require("express");
 const multer = require('multer');
-const upload = multer(); // Create a Multer instance with no storage options
+const upload = multer();
 
 
 
@@ -93,7 +93,6 @@ module.exports = (app) => {
             res.status(500).json({ error: 'Failed to upload image' });
         }
     });
-
 
     app.put('/change/:id', express.json(), async (req, res) => {
         try {
