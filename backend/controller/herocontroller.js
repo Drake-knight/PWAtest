@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
 const express = require("express");
+const multer = require('multer');
+const upload = multer(); // Create a Multer instance with no storage options
+
 
 
 dotenv.config();
@@ -17,6 +20,10 @@ const heroSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
+    },
+    image: {
+        data: Buffer,
+        contentType: String,
     },
 });
 
@@ -55,6 +62,35 @@ module.exports = (app) => {
             console.error('Error retrieving hero:', err);
             res.setHeader('Content-Type', 'application/json');
             res.status(500).json({ error: 'Failed to retrieve hero' });
+        }
+    });
+
+    app.post('/upload-image/:id', upload.single('image'), async (req, res) => {
+        try {
+            const { id } = req.params;
+            const image = req.file;
+
+            if (!image) {
+                res.status(400).json({ error: 'Image data is required' });
+            } else {
+                let heroToUpdate = await Hero.findOne({ id });
+
+                if (!heroToUpdate) {
+                    res.status(404).json({ error: 'Hero not found' });
+                } else {
+                    heroToUpdate.image = {
+                        data: image.buffer,
+                        contentType: image.mimetype,
+                    };
+
+                    await heroToUpdate.save();
+
+                    res.status(200).json({ message: 'Image uploaded successfully' });
+                }
+            }
+        } catch (err) {
+            console.error('Error uploading image:', err);
+            res.status(500).json({ error: 'Failed to upload image' });
         }
     });
 

@@ -44,5 +44,14 @@
 			"description": "A screenshot of the home page"
 		}
 	],
+	"share_target": {
+		"action": "/share-target/",
+		"method": "POST",
+		"params": {
+			"title": "title",
+			"text": "text",
+			"url": "url"
+		}
+	},
 	"prefer_related_applications": false
 }

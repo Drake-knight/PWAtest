@@ -2,6 +2,7 @@ import React, { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Hero from "./Hero";
 import axios from "axios";
+import HeroImageUpload from "./Imageupload";
 
 const ChangeName: React.FC = (): JSX.Element => {
 	const { id } = useParams();
@@ -92,7 +93,9 @@ const ChangeName: React.FC = (): JSX.Element => {
 			<button id="shareButton" className="modal-button" onClick={handleShare}>
 				Share Hero
 			</button>
-
+			<div>
+				<HeroImageUpload heroId={hero?.id || 0} />
+			</div>
 			{putError && <div>{putError}</div>}
 		</div>
 	);
