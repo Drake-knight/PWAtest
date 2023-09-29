@@ -24,11 +24,15 @@ const HeroImageUpload: React.FC<HeroImageUploadProps> = ({ heroId }) => {
 		formData.append("image", selectedFile);
 
 		try {
-			const response = await axios.post(`http://localhost:8000/upload-image/${heroId}`, formData, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+			const response = await axios.post(
+				`https://tour-of-heroes-xuwa.onrender.com/change/upload-image/${heroId}`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				}
+			);
 			console.log("Image uploaded successfully:", response.data);
 
 			alert("Image uploaded successfully!");
