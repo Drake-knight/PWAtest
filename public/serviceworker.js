@@ -20,40 +20,18 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-self.addEventListener("push", (event) => {
+self.addEventListener('push', (event) => {
     const options = {
         body: event.data.text(),
-        icon: "<public/logo192.png",
+        icon: 'icon.png',
+        badge: 'badge.png',
     };
 
     event.waitUntil(
-        self.registration.showNotification("Push Notification Title", options)
+        self.registration.showNotification('Push Notification', options)
     );
 });
 
-self.addEventListener("message", (event) => {
-    console.log(event);
-    if (event.data.type === "pushNotification") {
-        const data = event.data.data;
-
-        const pushOptions = {
-            body: data,
-            icon: "<public/logo192.png",
-        };
-
-        self.registration.showNotification("Push Notification Title", pushOptions);
-    } else if (event.data.type === "nameChangeNotification") {
-        const newName = event.data.data;
-        const message = `Hero Name Changed: ${newName}`;
-
-        const options = {
-            body: message,
-            icon: "/path/to/icon.png",
-        };
-
-        self.registration.showNotification("Name Changed", options);
-    }
-});
 
 self.addEventListener("activate", (event) => {
     const cacheWhiteList = [CACHE_NAME];

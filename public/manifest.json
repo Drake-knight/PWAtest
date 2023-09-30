@@ -44,18 +44,5 @@
 			"description": "A screenshot of the home page"
 		}
 	],
-	"share_target": {
-		"action": "/upload-image",
-		"method": "POST",
-		"enctype": "multipart/form-data",
-		"params": {
-			"files": [
-				{
-					"name": "image",
-					"accept": ["image/*"]
-				}
-			]
-		}
-	},
 	"prefer_related_applications": false
 }

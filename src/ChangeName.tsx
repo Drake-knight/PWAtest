@@ -2,53 +2,54 @@ import React, { FormEvent, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Hero from "./Hero";
 import axios from "axios";
-import HeroImageUpload from "./Imageupload";
+import { getFirebaseToken } from "./firebase"; // Assuming you have the correct Firebase setup
 
 const ChangeName: React.FC = (): JSX.Element => {
 	const { id } = useParams();
 	const [error, setError] = useState<string | null>(null);
 	const [isPending, setIsPending] = useState<boolean>(true);
 	const [hero, setHero] = useState<Hero | null>(null);
-
 	const [newName, setNewName] = useState<string>("");
 	const history = useNavigate();
 	const [putError, setPutError] = useState<string | null>(null);
+	const [fcmToken, setFcmToken] = useState<string | null>(null);
+	const [notificationSent, setNotificationSent] = useState<boolean>(false);
 
 	useEffect(() => {
-		axios
-			.get<Hero>(`https://tour-of-heroes-xuwa.onrender.com/heroes/${id}`)
-			.then((response) => {
+		const handleGetFirebaseToken = async () => {
+			try {
+				const firebaseToken = await getFirebaseToken();
+				setFcmToken(firebaseToken);
+				console.log("Firebase token:", firebaseToken);
+			} catch (err) {
+				console.error("An error occurred while retrieving Firebase token.", err);
+			}
+		};
+
+		const fetchData = async () => {
+			try {
+				const response = await axios.get<Hero>(`https://tour-of-heroes-xuwa.onrender.com/heroes/${id}`);
 				setHero(response.data);
 				setIsPending(false);
-			})
-			.catch((err) => {
+			} catch (err) {
 				setError("Error fetching data");
 				setIsPending(false);
-			});
+			}
+		};
+
+		handleGetFirebaseToken();
+		fetchData();
 	}, [id]);
 
-	const sendNameChangeNotification = async (newHeroName: any) => {
-		if ("PushManager" in window && "serviceWorker" in navigator) {
-			const registration = await navigator.serviceWorker.getRegistration();
-
-			if (registration && registration.active) {
-				const message = {
-					type: "nameChangeNotification",
-					data: newHeroName,
-				};
-				registration.active.postMessage(message);
-			}
-		}
-	};
 	const handleSubmit = async (e: FormEvent) => {
 		e.preventDefault();
 		try {
 			console.log("Submitting PUT request:");
 			console.log("ID:", id);
 			console.log("New Name:", newName);
-			sendNameChangeNotification(newName);
+
 			const response = await axios.put(
-				`https://tour-of-heroes-xuwa.onrender.com/change/${id}`,
+				`http://localhost:8000/change/${id}`,
 				{ newName },
 				{
 					headers: {
@@ -58,21 +59,42 @@ const ChangeName: React.FC = (): JSX.Element => {
 			);
 
 			console.log("PUT Response:", response);
+
+			if (!notificationSent) {
+				sendNotification();
+				setNotificationSent(true);
+			}
+
 			history(-1);
 		} catch (err: any) {
 			setPutError(err.message);
 		}
 	};
 
-	const handleShare = () => {
-		if (navigator.share) {
-			navigator.share({
-				title: `Hero name`,
-				text: `Hey it's ${hero?.name}`,
-				url: `${hero?.id}`,
-			});
-		} else {
-			console.log("web-api not supported");
+	const sendNotification = async () => {
+		if (fcmToken) {
+			try {
+				const notification = {
+					title: "Name Changed",
+					body: `The name of hero ${hero?.name || ""} has been changed to ${newName}`,
+				};
+
+				await fetch("https://fcm.googleapis.com/fcm/send", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `key=AAAAVKWap9g:APA91bFFnHq31l-JfEYDiW4G_6Xb6ttVwZkIXMGzJaOfYkVlRV0JL_CCrSWHTQLOeRjj_C8fJRI_UjOxzQ43VTZijAASTktff2CLeen25SDGemE3Nxdp09hEyLAXC0r0rcesWCW4Blqf`,
+					},
+					body: JSON.stringify({
+						to: fcmToken,
+						notification,
+					}),
+				});
+
+				console.log("Notification sent successfully");
+			} catch (err) {
+				console.error("An error occurred while sending the notification.", err);
+			}
 		}
 	};
 
@@ -90,13 +112,6 @@ const ChangeName: React.FC = (): JSX.Element => {
 				{!isPending && <button id="change-name-button">Change Name</button>}
 				{isPending && <button disabled>Changing</button>}
 			</form>
-			<button id="shareButton" className="modal-button" onClick={handleShare}>
-				Share Hero
-			</button>
-			<div>
-				<HeroImageUpload heroId={hero?.id || 0} />
-			</div>
-			{putError && <div>{putError}</div>}
 		</div>
 	);
 };
