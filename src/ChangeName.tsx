@@ -49,7 +49,7 @@ const ChangeName: React.FC = (): JSX.Element => {
 			console.log("New Name:", newName);
 
 			const response = await axios.put(
-				`http://localhost:8000/change/${id}`,
+				`https://tour-of-heroes-xuwa.onrender.com/change/${id}`,
 				{ newName },
 				{
 					headers: {
