@@ -70,6 +70,7 @@
 				window.addEventListener("beforeinstallprompt", (e) => {
 					e.preventDefault();
 					deferredPrompt = e;
+					let promptShown = false;
 					const installModal = document.getElementById("installModal");
 					installModal.style.display = "block";
 					const installButton = document.getElementById("installButton");
