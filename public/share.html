@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shared Image Viewer</title>
+		<link rel="manifest" href="manifest.json" />
+	</head>
+	<body>
+		<h1>Shared Image</h1>
+		<img id="sharedImage" src="" alt="Shared Image" />
+
+		<script>
+			window.addEventListener("load", () => {
+				const sharedImage = document.getElementById("sharedImage");
+
+				// Check if the Web Share API is available
+				if (navigator.share) {
+					// Listen for the "share" event
+					window.addEventListener("share", async (event) => {
+						try {
+							const sharedData = await event.share();
+
+							if (sharedData.files && sharedData.files.length > 0) {
+								const sharedFile = sharedData.files[0];
+
+								if (sharedFile.type.startsWith("image/")) {
+									sharedImage.src = URL.createObjectURL(sharedFile);
+								}
+							}
+						} catch (error) {
+							console.error("Error sharing:", error);
+						}
+					});
+				}
+			});
+		</script>
+	</body>
+</html>

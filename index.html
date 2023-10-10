@@ -2,14 +2,13 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#00000" />
 		<meta name="description" content="Web site created using create-react-app" />
 		<link rel="apple-touch-icon" href="https://www.pwabuilder.com/assets/icons/icon_192.png" />
 		<link rel="manifest" href="manifest.json" />
 		<title>Tour of Heroes</title>
-		<!-- Add these script tags to your index.html file -->
 		<script src="https://cdn.rawgit.com/WICG/web-share-target/master/polyfill/web-share-target.js"></script>
 		<script src="https://cdn.rawgit.com/WICG/web-share-target/master/polyfill/web-share.js"></script>
 
@@ -61,6 +60,7 @@
 				<button id="noThanksButton" class="modal-button no">No, thanks</button>
 			</div>
 		</div>
+		<script type="module" src="/src/index.tsx"></script>
 
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
@@ -95,7 +95,7 @@
 				if ("serviceWorker" in navigator) {
 					window.addEventListener("load", () => {
 						navigator.serviceWorker
-							.register("/serviceworker.js")
+							.register("")
 							.then((reg) => console.log("success: ", reg.scope))
 							.catch((err) => console.log("Error: ", err));
 					});
